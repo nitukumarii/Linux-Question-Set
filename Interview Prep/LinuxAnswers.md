@@ -1,4 +1,4 @@
-What Linux flavor are you most comfortable with?
+### 1. What Linux flavor are you most comfortable with?
 
 My primary experience has been with Red Hat Enterprise Linux (RHEL) and CentOS in production environments.
 I've also worked with Ubuntu servers, particularly in cloud-native and containerized environments.
