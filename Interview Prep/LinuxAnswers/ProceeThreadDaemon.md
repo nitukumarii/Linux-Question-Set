@@ -127,8 +127,114 @@ The SSH daemon keeps running and waits for incoming SSH connections.
 
 # Interview Answer (2-Minute Version)
 
-A process is an independent running program with its own memory space and system resources. For example, a Java application or MySQL server running on Linux.
+A process is an independent running program with its own memory space and system resources. For example, a Java application or MySQL server running on Linux
 
 A thread is a lightweight execution unit within a process. Multiple threads share the same memory and resources, making communication faster and context switching cheaper than between processes.
 
 A daemon is a special type of process that runs in the background and provides system services. Examples include sshd, crond, Docker, and kubelet. Daemons typically start during system boot and continue running without user interaction.
+
+
+
+#### Common Linux Daemons Started During Boot
+
+When a Linux system boots, `systemd` starts various daemons (background services) required for operating system functionality, networking, logging, security, and application workloads.
+
+| Daemon                | Purpose                                                                         |
+| --------------------- | ------------------------------------------------------------------------------- |
+| systemd               | First userspace process (PID 1) responsible for starting and managing services. |
+| systemd-journald      | Collects and stores system logs.                                                |
+| systemd-logind        | Manages user logins and sessions.                                               |
+| dbus-daemon           | Provides inter-process communication between applications and services.         |
+| NetworkManager        | Manages network interfaces, IP addresses, DNS, and connectivity.                |
+| systemd-networkd      | Alternative network management daemon often used on servers.                    |
+| sshd                  | Accepts incoming SSH connections for remote administration.                     |
+| crond / cron          | Executes scheduled tasks and jobs.                                              |
+| rsyslogd              | Traditional syslog daemon for centralized log collection and forwarding.        |
+| chronyd / ntpd        | Synchronizes system time with NTP servers.                                      |
+| firewalld             | Manages firewall rules dynamically.                                             |
+| auditd                | Records security-relevant system events for auditing and compliance.            |
+| polkitd               | Provides authorization framework for privileged operations.                     |
+| udevd (systemd-udevd) | Detects and manages hardware devices dynamically.                               |
+| multipathd            | Manages multiple storage paths for high availability storage systems.           |
+| tuned                 | Dynamically optimizes system performance profiles.                              |
+| docker                | Manages Docker containers.                                                      |
+| containerd            | Container runtime used by Docker and Kubernetes.                                |
+| kubelet               | Kubernetes node agent responsible for managing pods and containers.             |
+| nginx                 | Web server and reverse proxy service.                                           |
+| httpd                 | Apache web server daemon.                                                       |
+| mysqld                | MySQL database server process.                                                  |
+| postgresql            | PostgreSQL database server process.                                             |
+| redis-server          | In-memory key-value database service.                                           |
+| elasticsearch         | Search and analytics engine service.                                            |
+| prometheus            | Metrics collection and monitoring service.                                      |
+| grafana-server        | Visualization and dashboard service.                                            |
+
+---
+
+# Most Important Daemons for SRE Interviews
+
+### systemd
+
+Service manager that starts and monitors all services during boot.
+
+### systemd-journald
+
+Stores system logs that can be viewed using:
+
+```bash
+journalctl -xe
+```
+
+### sshd
+
+Allows remote login and server administration.
+
+### NetworkManager
+
+Configures network interfaces and maintains connectivity.
+
+### crond
+
+Runs scheduled jobs such as backups and maintenance scripts.
+
+### auditd
+
+Captures security events and user activities.
+
+### chronyd
+
+Keeps system time synchronized across servers.
+
+### docker/containerd
+
+Runs and manages containers.
+
+### kubelet
+
+Communicates with Kubernetes control plane and ensures pods are running.
+
+---
+
+# Interview Question
+
+**Q: Which daemons would you check first if a server is not functioning correctly after reboot?**
+
+**Answer:**
+
+1. systemd → Verify service startup.
+2. NetworkManager/systemd-networkd → Check network connectivity.
+3. sshd → Ensure remote access is available.
+4. systemd-journald/rsyslog → Review logs.
+5. application daemon (nginx, docker, kubelet, mysqld, etc.) → Verify application services.
+6. chronyd → Confirm time synchronization.
+7. auditd → Check for security-related issues.
+
+Useful commands:
+
+```bash
+systemctl list-units --type=service
+systemctl --failed
+journalctl -b
+systemctl status sshd
+```
+
