@@ -238,3 +238,261 @@ journalctl -b
 systemctl status sshd
 ```
 
+#### Daemon, Service Files, Config Files & daemon-reload
+
+## What is a Daemon?
+
+A daemon is a background process that runs continuously and provides system or application services.
+
+Examples:
+
+* sshd (SSH server)
+* nginx (Web server)
+* crond (Scheduler)
+* docker (Container runtime)
+* kubelet (Kubernetes node agent)
+
+Most daemons are managed by `systemd`.
+
+---
+
+# Service File vs Configuration File
+
+## Service File (.service)
+
+Defines **how systemd should manage a service**.
+
+Typical locations:
+
+### RHEL/CentOS/Rocky
+
+```bash
+/usr/lib/systemd/system/
+```
+
+### Ubuntu/Debian
+
+```bash
+/lib/systemd/system/
+```
+
+### Custom Services
+
+```bash
+/etc/systemd/system/
+```
+
+Example:
+
+```bash
+/etc/systemd/system/myapp.service
+```
+
+Sample:
+
+```ini
+[Unit]
+Description=My Application
+
+[Service]
+ExecStart=/opt/app/app.jar
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+---
+
+## Configuration File
+
+Defines **how the application behaves**.
+
+Examples:
+
+### Nginx
+
+```bash
+/etc/nginx/nginx.conf
+```
+
+### SSH
+
+```bash
+/etc/ssh/sshd_config
+```
+
+### Docker
+
+```bash
+/etc/docker/daemon.json
+```
+
+### MySQL
+
+```bash
+/etc/my.cnf
+```
+
+### Application
+
+```bash
+application.properties
+application.yml
+```
+
+---
+
+# What Does systemctl daemon-reload Do?
+
+```bash
+systemctl daemon-reload
+```
+
+It tells **systemd**:
+
+> "Re-read all service (.service) files because they may have changed."
+
+Important:
+
+* Does NOT restart the application.
+* Does NOT reread application config files.
+* Only reloads systemd service definitions into memory.
+
+---
+
+# When to Use daemon-reload
+
+## Service File Changed
+
+Example:
+
+```bash
+/etc/systemd/system/myapp.service
+```
+
+Changed:
+
+```ini
+ExecStart
+Environment
+Restart
+User
+```
+
+Run:
+
+```bash
+systemctl daemon-reload
+systemctl restart myapp
+```
+
+✅ Correct
+
+---
+
+# When NOT to Use daemon-reload
+
+## Application Config Changed
+
+Example:
+
+```bash
+/etc/nginx/nginx.conf
+```
+
+Run:
+
+```bash
+nginx -t
+systemctl reload nginx
+```
+
+❌ No daemon-reload needed
+
+---
+
+Example:
+
+```bash
+/etc/ssh/sshd_config
+```
+
+Run:
+
+```bash
+sshd -t
+systemctl reload sshd
+```
+
+❌ No daemon-reload needed
+
+---
+
+# Reload vs Restart
+
+## Reload
+
+```bash
+systemctl reload nginx
+```
+
+* Service keeps running
+* Reads new configuration
+* Usually no downtime
+
+## Restart
+
+```bash
+systemctl restart nginx
+```
+
+* Stops service
+* Starts service again
+* May cause brief downtime
+
+---
+
+# Interview Questions
+
+### Q: I changed nginx.conf. What should I do?
+
+```bash
+nginx -t
+systemctl reload nginx
+```
+
+Do NOT run:
+
+```bash
+systemctl daemon-reload
+```
+
+---
+
+### Q: I changed myapp.service. What should I do?
+
+```bash
+systemctl daemon-reload
+systemctl restart myapp
+```
+
+---
+
+# Memory Trick
+
+```text
+.service file changed
+    ↓
+daemon-reload + restart
+
+Application config changed
+    ↓
+reload/restart service
+```
+
+---
+
+# One-Line Interview Answer
+
+`systemctl daemon-reload` is used only when a systemd service file (.service) has been created or modified. It instructs systemd to reread service definitions. For application configuration changes, I use service reload or restart instead.
