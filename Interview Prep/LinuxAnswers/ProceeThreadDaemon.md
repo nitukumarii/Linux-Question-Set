@@ -431,6 +431,8 @@ systemctl reload sshd
 
 # Reload vs Restart
 
+Reload is preferred when an application supports re-reading configuration without stopping the process, as it avoids downtime. Restart stops the existing process and starts a new one, which may cause a brief interruption. For service file changes, I perform daemon-reload followed by a restart. For configuration changes, I use reload if the application supports it; otherwise, I perform a restart.
+
 ## Reload
 
 ```bash
