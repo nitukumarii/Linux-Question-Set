@@ -9,6 +9,7 @@
 If the configuration is correct, the command produces no output. If there is an error, it displays the line number and issue.
 
 ---
+<img width="1017" height="432" alt="image" src="https://github.com/user-attachments/assets/a65b3c1d-32e1-4efe-8706-8556618e900d" />
 
 ## Q2: Why do we use `sshd -t` before restarting SSH?
 
