@@ -53,20 +53,20 @@ This is the top-level directory of the entire Linux filesystem.
 
 
 
-
+### /proc
 <img width="431" height="317" alt="image" src="https://github.com/user-attachments/assets/ae166996-cd5d-41d9-9708-c7901fc6d15b" />
 
 
 
 
-
+### /sys
 
 <img width="312" height="261" alt="image" src="https://github.com/user-attachments/assets/46a8bb22-515a-477a-a8c7-b45a72ab95d9" />
 
 
 
 
-
+### /dev
 
 <img width="292" height="302" alt="image" src="https://github.com/user-attachments/assets/3397ecb7-f069-46d4-a434-d7ada4507d4f" />
 
