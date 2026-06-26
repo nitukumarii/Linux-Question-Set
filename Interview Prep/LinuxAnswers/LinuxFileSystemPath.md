@@ -16,19 +16,22 @@ K --> L[System Ready / Login]
 This is the top-level directory of the entire Linux filesystem.
 
 
+
+### /Boot Filesystem
+
 <img width="407" height="517" alt="image" src="https://github.com/user-attachments/assets/529bb0ea-0747-402c-a680-2d1b5afb6b31" />
 
 
 
 
-
+### /Root Filesystem
 <img width="471" height="550" alt="image" src="https://github.com/user-attachments/assets/ef627326-40ee-459a-823c-64bbc9164d28" />
 
 
 
 
 
-
+### /home
 <img width="407" height="322" alt="image" src="https://github.com/user-attachments/assets/cc67c21c-aead-4de8-8476-78fb53415e46" />
 
 
