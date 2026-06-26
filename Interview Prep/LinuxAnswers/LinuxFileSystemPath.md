@@ -1,0 +1,56 @@
+
+Power ON
+      ↓
+GRUB
+      ↓
+Kernel
+      ↓
+initramfs
+      ↓
+Mount Root Filesystem (/)
+      ↓
+/
+├── boot
+├── etc
+├── home
+├── root
+├── var
+├── usr
+├── proc
+├── sys
+└── dev
+
+
+
+### / (Root Filesystem)
+
+This is the top-level directory of the entire Linux filesystem.
+
+
+<img width="407" height="517" alt="image" src="https://github.com/user-attachments/assets/529bb0ea-0747-402c-a680-2d1b5afb6b31" />
+
+<img width="471" height="550" alt="image" src="https://github.com/user-attachments/assets/ef627326-40ee-459a-823c-64bbc9164d28" />
+
+
+<img width="407" height="322" alt="image" src="https://github.com/user-attachments/assets/cc67c21c-aead-4de8-8476-78fb53415e46" />
+
+
+
+<img width="427" height="315" alt="image" src="https://github.com/user-attachments/assets/176a3159-75c2-4f5d-b079-913e4dcc2153" />
+
+
+<img width="412" height="311" alt="image" src="https://github.com/user-attachments/assets/fd7343b2-d8d0-4a1e-b5db-956a08898078" />
+
+<img width="482" height="287" alt="image" src="https://github.com/user-attachments/assets/cf2d794d-4a49-4436-9234-d2d33de11cc3" />
+
+
+<img width="431" height="317" alt="image" src="https://github.com/user-attachments/assets/ae166996-cd5d-41d9-9708-c7901fc6d15b" />
+
+
+<img width="312" height="261" alt="image" src="https://github.com/user-attachments/assets/46a8bb22-515a-477a-a8c7-b45a72ab95d9" />
+
+
+<img width="292" height="302" alt="image" src="https://github.com/user-attachments/assets/3397ecb7-f069-46d4-a434-d7ada4507d4f" />
+
+
+
