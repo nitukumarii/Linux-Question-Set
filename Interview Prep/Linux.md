@@ -2,19 +2,19 @@
 
 ## Linux Fundamentals
 
-* Difference between Process, Thread, and Daemon
-* Explain the Linux Boot Process
-* What happens when a Linux server boots?
-* What is `systemd`?
-* What is a Zombie Process?
+* Difference between Process, Thread, and Daemon - **Done**
+* Explain the Linux Boot Process - **Done**
+* What happens when a Linux server boots?  **Done**
+* What is `systemd`? - **Done**
+* What is a Zombie Process? **Done**
 * What is an Orphan Process?
-* What is the OOM (Out of Memory) Killer?
-* Difference between Soft Link (Symbolic Link) and Hard Link
+* What is the OOM (Out of Memory) Killer? **Done**
+* Difference between Soft Link (Symbolic Link) and Hard Link **Done**
 
 ## Memory Management
 
-* What happens when system memory becomes full?
-* How do you troubleshoot high memory utilization?
+* What happens when system memory becomes full? **Done**
+* How do you troubleshoot high memory utilization? **Done**
 * How does Linux handle memory pressure?
 * What is Swap Memory and when is it used?
 
@@ -41,10 +41,10 @@
 
 ## Kernel & System Stability
 
-* What causes a Kernel Panic?
-* How do you troubleshoot a Kernel Panic?
-* What logs and tools would you use after a Kernel Panic?
-* Difference between User Space and Kernel Space
+* What causes a Kernel Panic? **done**
+* How do you troubleshoot a Kernel Panic?**done*
+* What logs and tools would you use after a Kernel Panic?**done**
+* Difference between User Space and Kernel Space **done**
 
 ## Linux Performance Tools
 
