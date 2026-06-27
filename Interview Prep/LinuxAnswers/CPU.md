@@ -1,177 +1,158 @@
-# 🧠 How do you troubleshoot high CPU utilization?
+# 🧠 Interview Question: How do you troubleshoot High CPU Utilization?
 
-## 1. Confirm CPU utilization
+## Production Scenario
 
-Check overall CPU usage:
+In one of our production environments, users started reporting that the application was responding very slowly and API response times had increased significantly.
+
+---
+
+## Step 1: Verify CPU Utilization
+
+I first logged into the server and checked the CPU utilization.
+
+
+**top**
+
+
+I observed:
+
+- User CPU (us) = 72%
+- System CPU (sy) = 18%
+- Idle CPU (id) = 8%
+- I/O Wait (wa) = 2%
+
+This indicated that the CPU was heavily utilized and the issue was **CPU saturation**, not a disk I/O bottleneck.
+
+---
+
+## Step 2: Identify the CPU-intensive Process
+
+Next, I identified the process consuming the highest CPU.
+
+
+**ps aux --sort=-%cpu | head**
+
+
+Output:
+
+```text
+USER   PID   %CPU  %MEM  COMMAND
+root  12345  340   12.3  java
+```
+
+I found that a Java application was consuming around **340% CPU** on a multi-core server.
+
+---
+
+## Step 3: Check Whether It's a Temporary Spike
+
+To verify whether it was a temporary spike or a continuous issue, I monitored the server using:
+
+
+**vmstat 1 10**
+
+I observed:
+
+- High User CPU
+- Very Low Idle CPU
+- No Swap Activity
+- Normal I/O Wait
+
+This confirmed that the issue was sustained CPU utilization and not caused by memory pressure or disk latency.
+
+---
+
+## Step 4: Check Thread-Level CPU Usage
+
+Since it was a Java application, I checked thread-level CPU usage.
+
+
+**top -H -p 12345**
+
+
+I found one thread consuming nearly **100% CPU** continuously.
+
+---
+
+## Step 5: Capture Thread Dump
+
+I converted the thread ID into hexadecimal.
+
+
+**printf "%x\n" <ThreadID>**
+
+
+Then collected the Java thread dump.
+
+
+**jstack 12345 > threaddump.txt**
+
+Searching for the hexadecimal thread ID in the thread dump helped identify the exact Java thread responsible.
+
+---
+
+## Step 6: Root Cause Analysis
+
+After reviewing the thread dump and application logs, we found that:
+
+- A recent deployment introduced an inefficient loop.
+- The application repeatedly processed the same records.
+- One thread continuously executed without terminating, consuming excessive CPU.
+
+---
+
+## Step 7: Resolution
+
+### Immediate Mitigation
+
+- Restarted the Java service to restore application availability.
+
+### Permanent Fix
+
+The development team:
+
+- Fixed the inefficient loop.
+- Optimized the processing logic.
+- Released a new version.
+
+We also:
+
+- Added Prometheus CPU alerts.
+- Improved load testing before deployments.
+- Added monitoring dashboards in Grafana.
+
+The application CPU utilization dropped from **340%** to around **40–50%**, and response times returned to normal.
+
+---
+
+# Commands Used
 
 ```bash
 top
 ```
-
-or
-
-```bash
-mpstat -P ALL 1 5
-```
-
-Look for:
-- User CPU (`us`)
-- System CPU (`sy`)
-- Idle CPU (`id`)
-- I/O wait (`wa`)
-
----
-
-## 2. Identify CPU-intensive processes
 
 ```bash
 ps aux --sort=-%cpu | head
 ```
 
-or
-
 ```bash
-top
+vmstat 1 10
 ```
-
-Find the process consuming the most CPU.
-
----
-
-## 3. Analyze the process
-
-If it's a Java process:
 
 ```bash
 top -H -p <PID>
 ```
 
-This shows thread-level CPU usage.
-
-Then collect a thread dump (Java):
+```bash
+printf "%x\n" <ThreadID>
+```
 
 ```bash
 jstack <PID>
 ```
 
-For non-Java applications:
-
-- Check application logs
-- Check process behavior
-- Verify recent deployments or configuration changes
-
 ---
 
-## 4. Check system-wide bottlenecks
+# 🎯 Final Interview Answer
 
-```bash
-vmstat 1 5
-```
-
-Look for:
-- High `r` (run queue)
-- Low `id` (idle CPU)
-- High `sy` (system CPU)
-
----
-
-## 5. Check recent changes
-
-- Recent deployment
-- Configuration changes
-- Traffic increase
-- Scheduled jobs
-- Infinite loops or application bugs
-
----
-
-## 6. Take corrective action
-
-Depending on the root cause:
-
-- Optimize application code
-- Fix infinite loops
-- Tune application configuration
-- Scale horizontally/vertically
-- Restart the service if immediate recovery is required
-
----
-
-# 🎯 Interview Answer
-
-> To troubleshoot high CPU utilization, I first verify CPU usage using `top` or `mpstat`. Then I identify the top CPU-consuming process using `top` or `ps aux --sort=-%cpu`. If required, I perform deeper analysis—for example, using `top -H` and `jstack` for Java applications. I also use `vmstat` to check whether the issue is CPU saturation or another system bottleneck. Finally, I identify the root cause, such as increased workload, inefficient code, or recent configuration changes, and take appropriate corrective actions like optimization, scaling, or restarting the service if necessary.
-
----
-
-# 🧠 What are common causes of CPU spikes?
-
-Common causes include:
-
-- Sudden increase in application traffic
-- Infinite loops or inefficient code
-- High number of requests
-- Too many running processes or threads
-- High system calls (kernel activity)
-- Scheduled jobs (cron jobs)
-- Database-intensive queries
-- Malware or runaway processes
-- Recent deployment or configuration changes
-
----
-
-# 🧠 How do you identify CPU-intensive processes?
-
-Use:
-
-```bash
-top
-```
-
-or
-
-```bash
-ps aux --sort=-%cpu | head
-```
-
-For thread-level CPU usage:
-
-```bash
-top -H -p <PID>
-```
-
-If it's a Java application:
-
-```bash
-jstack <PID>
-```
-
-to identify the thread causing high CPU usage.
-
----
-
-# 🧠 Explain CPU Load vs CPU Utilization
-
-| CPU Load | CPU Utilization |
-|----------|-----------------|
-| Number of processes waiting to run or currently running on the CPU | Percentage of CPU currently being used |
-| Indicates demand for CPU | Indicates actual CPU usage |
-| Measured as Load Average | Measured as %CPU |
-| Can be high even if CPU isn't fully utilized (e.g., processes waiting for I/O) | High utilization means CPU is actively executing work |
-
-### Example
-
-Suppose a server has **8 CPU cores**.
-
-- **CPU Utilization = 90%**
-  - CPUs are busy executing tasks.
-
-- **Load Average = 12**
-  - 12 processes are either running or waiting for CPU.
-  - Since there are only 8 cores, some processes must wait.
-  - This indicates CPU contention.
-
----
-
-# 🎯 Interview Answer
-
-> CPU utilization represents the percentage of CPU resources actively being used, whereas CPU load represents the number of processes that are running or waiting to run. High CPU utilization means the CPU is busy executing work. High load indicates demand for CPU resources and may also include processes waiting for CPU or uninterruptible resources such as disk I/O. Therefore, CPU utilization tells us how busy the CPU is, while CPU load tells us how much work is competing for CPU time.
+> When users reported that the application was slow, I first verified CPU utilization using `top` and observed high user CPU with very low idle CPU, confirming CPU saturation. I then identified the top CPU-consuming process using `ps aux --sort=-%cpu` and found a Java process consuming most of the CPU. To determine whether it was a temporary spike or a sustained issue, I monitored the system using `vmstat`, which consistently showed high user CPU and low idle CPU with normal I/O wait. Since it was a Java application, I analyzed thread-level CPU usage using `top -H` and collected a thread dump using `jstack` to identify the thread responsible. The investigation revealed that a recently deployed feature had introduced an inefficient loop, causing one thread to consume excessive CPU. As an immediate mitigation, I restarted the service to restore availability. The development team then fixed the code, and we deployed the updated version. We also strengthened monitoring and alerting to detect similar issues proactively.
