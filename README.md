@@ -1,33 +1,7 @@
-# Orcale-Interview
-
-JD
 
 
-Skip to main content.
+**Sample JD For Cloud Infrastrcuture**
 
-
-
-
-
-Copy
- Share on LinkedInShare via EmailShare on WhatsAppShare on Twitter
-
-View More Jobs
-Senior Cloud Operations Engineer
-India
-Trending
-Job Identification
-336124
-Job Category
-Product Development
-Posting Date
-18/06/2026, 07:41
-Role
-Individual Contributor
-Job Type
-Regular Employee
-Does this position require a security clearance?
-No
 Years
 3 to 5+ years
 Additional Info
