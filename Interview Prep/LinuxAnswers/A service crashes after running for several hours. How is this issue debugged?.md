@@ -1,18 +1,16 @@
 
 **A service crashes after running for several hours. How is this issue debugged?**
 
-Step 1: Service status check
+I first check the service status using systemctl status <service> to confirm whether it has stopped, failed, or is continuously restarting.
 
-I first check the service state using systemctl status <service> to confirm whether it is stopped, failed, or restarting.
+Step 2: Analyze logs
 
-Step 2: Log analysis
+I review journalctl -u <service> -xe and the application logs to identify exceptions, crashes, or recurring error patterns.
 
-Then I analyze logs using journalctl -u <service> -xe and also check application-specific log files to identify error patterns or crash reasons.
+Step 3: Correlate with system resources
 
-Step 3: System resource correlation
+Since the issue occurs only after several hours, I would suspect a memory leak or resource exhaustion. I would check memory, CPU, disk, swap, and OOM events using free -m, top, dmesg, and monitoring dashboards.
 
-Since the issue happens after several hours, I check system metrics like memory usage, CPU spikes, disk space, and possible OOM kills using dmesg, top, and monitoring dashboards.
+Step 4: Identify the root cause
 
-Step 4: Root cause isolation
-
-I then correlate logs with system behavior to identify causes like memory leaks, file descriptor exhaustion, dependency failures, or resource limits, and take corrective action accordingly.
+I correlate the application logs with system metrics to determine whether the issue is caused by a memory leak, file descriptor exhaustion, dependency failures, or resource limits, and then implement the appropriate fix.
