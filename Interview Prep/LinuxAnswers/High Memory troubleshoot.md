@@ -51,6 +51,11 @@ anonymous memory
 VmRSS helps us understand actual physical memory consumption and OOM risk, while VmData confirms heap growth trends. So pmap helps identify where memory is growing, 
 and /proc helps understand how critical the issue is from a system stability perspective.
 
+
+
+<img width="912" height="597" alt="image" src="https://github.com/user-attachments/assets/440b6763-c2a3-4e0e-b0d3-20d67d7f324b" />
+
+
 . I also check system-level trends using **vmstat** and look for any OOM events in **dmesg** or **journalctl**. Finally, I determine whether the
 issue is due to memory leak, high workload, or misconfiguration, and take corrective actions such as restarting the service, tuning memory, or scaling the application.
 
